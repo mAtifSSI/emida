@@ -22,34 +22,34 @@ services:
         "/app.jar",
       ]
 
-#  configserver:
-#    image: kms/configserver
-#    container_name: configserver
-#    build:
-#      context: ./configserver
-#      dockerfile: Dockerfile
-#    environment:
-#      - DISCOVERY_SERVER_HOST=discovery
-#    ports:
-#      - "9090:9090"
-#    depends_on:
-#      - discovery
-#    command:
-#      [
-#        "./wait-for-it.sh",
-#        "discovery:8761",
-#        "--",
-#        "java",
-#        "-Xmx64m",
-#        "-Xss512k",
-#        "-jar",
-#        "-Dserver.port=9090",
-#        "-Dspring.profiles.active=staging",
-#        "-Djava.security.egd=file:/dev/./urandom",
-#        "/app.jar",
-#      ]
-#    links:
-#      - discovery:discovery
+  configserver:
+    image: kms/config
+    container_name: config
+    build:
+      context: ./config
+      dockerfile: Dockerfile
+    environment:
+      - DISCOVERY_SERVER_HOST=discovery
+    ports:
+      - "9090:9090"
+    depends_on:
+      - discovery
+    command:
+      [
+
+        "discovery:8761",
+        "--",
+        "java",
+        "-Xmx64m",
+        "-Xss512k",
+        "-jar",
+        "-Dserver.port=9090",
+        "-Dspring.profiles.active=staging",
+        "-Djava.security.egd=file:/dev/./urandom",
+        "/app.jar",
+      ]
+    links:
+      - discovery:discovery
 #
 #  calculator:
 #    image: kms/calculator
