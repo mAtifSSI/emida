@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: account
+
+#  webflux:
+#    base-path: /accounts
+  cloud:
+    config:
+      discovery:
+        service-id: configserver
+    discovery:
+      enabled: true
+    service-registry:
+      auto-registration:
+        enabled: true
+  config:
+    import: configserver:http://localhost:8082
+
+eureka:
+  client:
+    enabled: true
+    instance:
+      leaseExpirationDurationInSeconds: 2
+      leaseRenewalIntervalInSeconds: 1
+    registryFetchIntervalSeconds: 5
+    serviceUrl:
+      defaultZone: http://localhost:8081/eureka
+      registerWithEureka: true
+server:
+  port: 8084
+  servlet:
+    context-path: /accounts

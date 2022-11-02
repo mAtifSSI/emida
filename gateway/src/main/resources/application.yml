@@ -1,0 +1,61 @@
+spring:
+  application:
+    name: gateway
+  #  webflux:
+  #    base-path: gateway
+  main:
+    web-application-type: reactive
+  cloud:
+    config:
+      discovery:
+        service-id: configserver
+    discovery:
+      enabled: true
+#    compatibility-verifier:
+#      enabled: false
+    gateway:
+      routes:
+        - id: account
+          uri: http://localhost:8084/accounts/
+          predicates:
+            - Path=/accounts/**
+        - id: employee
+          uri: http://localhost:8085/employee/
+          predicates:
+            - Path=/employee/**
+    service-registry:
+      auto-registration:
+        enabled: true
+  config:
+    import: configserver:http://localhost:8082
+#  profiles:
+#    active: default
+
+management:
+  endpoint:
+    gateway:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: gateway
+
+eureka:
+  client:
+    enabled: true
+    instance:
+      leaseExpirationDurationInSeconds: 2
+      leaseRenewalIntervalInSeconds: 1
+    registryFetchIntervalSeconds: 5
+    serviceUrl:
+      defaultZone: http://localhost:8081/eureka
+      registerWithEureka: true
+#  instance:
+#    instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+#    leaseExpirationDurationInSeconds: 2
+#    leaseRenewalIntervalInSeconds: 1
+#    metadataMap:
+#      instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${random.value}}}
+server:
+  port: 8083
+

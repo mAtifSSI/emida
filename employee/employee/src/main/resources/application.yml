@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: employee
+
+  cloud:
+    config:
+      import: configserver:http://localhost:8082
+      discovery:
+        service-id: configserver
+    discovery:
+      enabled: true
+    service-registry:
+      auto-registration:
+        enabled: true
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/emida
+    username: root
+    password: root
+
+eureka:
+  client:
+    enabled: true
+    instance:
+      leaseExpirationDurationInSeconds: 2
+      leaseRenewalIntervalInSeconds: 1
+    registryFetchIntervalSeconds: 5
+    serviceUrl:
+      defaultZone: http://localhost:8081/eureka
+      registerWithEureka: true
+server:
+  port: 8085
+  servlet:
+    context-path: /employee
